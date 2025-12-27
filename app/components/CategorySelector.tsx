@@ -17,12 +17,14 @@ interface CategorySelectorProps {
     progress?: any
   ) => void;
   onShowStats?: () => void;
+  onShowBookmarks?: () => void;
 }
 
 export default function CategorySelector({
   questionSets,
   onSelect,
   onShowStats,
+  onShowBookmarks,
 }: CategorySelectorProps) {
   const [selectedLevel, setSelectedLevel] = useState<string>("");
   const [selectedFuelType, setSelectedFuelType] = useState<string>("");
@@ -204,14 +206,24 @@ export default function CategorySelector({
             <h1 className="text-center text-4xl font-bold text-gray-800 dark:text-gray-100">
               問題集を選択
             </h1>
-            {onShowStats && (
-              <button
-                onClick={onShowStats}
-                className="rounded-lg bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
-              >
-                統計を見る
-              </button>
-            )}
+            <div className="flex gap-2">
+              {onShowBookmarks && (
+                <button
+                  onClick={onShowBookmarks}
+                  className="rounded-lg bg-yellow-100 px-4 py-2 text-sm font-medium text-yellow-800 transition-colors hover:bg-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300 dark:hover:bg-yellow-900/50"
+                >
+                  ブックマーク
+                </button>
+              )}
+              {onShowStats && (
+                <button
+                  onClick={onShowStats}
+                  className="rounded-lg bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                >
+                  統計を見る
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="space-y-6">

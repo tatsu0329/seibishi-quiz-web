@@ -5,6 +5,7 @@ import Quiz from "./components/Quiz";
 import CategorySelector from "./components/CategorySelector";
 import ThemeToggle from "./components/ThemeToggle";
 import StatsView from "./components/StatsView";
+import BookmarksView from "./components/BookmarksView";
 import questionSetsData from "@/src/data/index";
 import type { Question, QuestionSet } from "@/src/data/index";
 import type { QuizProgress } from "@/src/utils/storage";
@@ -22,6 +23,16 @@ interface SelectedQuiz {
 export default function Home() {
   const [selectedQuiz, setSelectedQuiz] = useState<SelectedQuiz | null>(null);
   const [showStats, setShowStats] = useState(false);
+  const [showBookmarks, setShowBookmarks] = useState(false);
+
+  if (showBookmarks) {
+    return (
+      <>
+        <ThemeToggle />
+        <BookmarksView onBack={() => setShowBookmarks(false)} />
+      </>
+    );
+  }
 
   if (showStats) {
     return (
@@ -61,6 +72,7 @@ export default function Home() {
           setSelectedQuiz({ questions, category, progress })
         }
         onShowStats={() => setShowStats(true)}
+        onShowBookmarks={() => setShowBookmarks(true)}
       />
     </>
   );

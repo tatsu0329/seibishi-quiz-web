@@ -11,6 +11,7 @@ import {
   type QuizResult,
   type QuizProgress,
 } from "@/src/utils/storage";
+import { formatCategoryDisplay } from "@/src/utils/formatYear";
 
 interface Question {
   id: string;
@@ -50,6 +51,7 @@ export default function Quiz({
   const [showResult, setShowResult] = useState(false);
   const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set());
   const [showSaveConfirm, setShowSaveConfirm] = useState(false);
+  const [isReviewMode, setIsReviewMode] = useState(false);
 
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
@@ -188,11 +190,20 @@ export default function Quiz({
     const incorrectQuestions = questions.filter(
       (q, index) => userAnswers[index] !== q.answerIndex - 1
     );
+    // 復習モードに移行する前に、すべての状態をリセット
+    setIsReviewMode(true);
+    setUserAnswers([]);
+    setCurrentQuestionIndex(0);
+    setSelectedAnswer(null);
+    setIsAnswered(false);
+    setShowResult(false);
     onReviewIncorrect(incorrectQuestions);
   };
 
   if (showResult) {
+    // 復習モードの場合は、現在のquestions配列に対する回答のみを考慮
     const correctCount = userAnswers.reduce((count, answer, index) => {
+      if (index >= questions.length) return count;
       return count + (answer === questions[index].answerIndex - 1 ? 1 : 0);
     }, 0);
     const percentage = Math.round((correctCount / questions.length) * 100);
@@ -201,9 +212,14 @@ export default function Quiz({
     return (
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4 dark:from-gray-900 dark:to-gray-800">
         <div className="w-full max-w-2xl rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800">
-          <h1 className="mb-6 text-center text-4xl font-bold text-gray-800 dark:text-gray-100">
+          <h1 className="mb-4 text-center text-4xl font-bold text-gray-800 dark:text-gray-100">
             結果
           </h1>
+          <div className="mb-6 rounded-lg bg-indigo-50 px-4 py-2 text-center dark:bg-indigo-900/20">
+            <div className="text-sm font-medium text-indigo-700 dark:text-indigo-300">
+              問題集: {formatCategoryDisplay(category)}
+            </div>
+          </div>
           <div className="mb-8 text-center">
             <div className="mb-4 text-6xl font-bold text-indigo-600 dark:text-indigo-400">
               {correctCount} / {questions.length}
@@ -214,6 +230,10 @@ export default function Quiz({
           </div>
           <div className="mb-6 space-y-4">
             {questions.map((question, index) => {
+              // userAnswersの範囲チェック
+              if (index >= userAnswers.length) {
+                return null;
+              }
               const isCorrect = userAnswers[index] === question.answerIndex - 1;
               return (
                 <div
@@ -238,10 +258,12 @@ export default function Quiz({
                       {isCorrect ? "正解" : "不正解"}
                     </span>
                   </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
-                    選択した答え:{" "}
-                    {extractChoiceNumber(question.choices[userAnswers[index]])}
-                  </div>
+                  {userAnswers[index] !== undefined && userAnswers[index] < question.choices.length && (
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      選択した答え:{" "}
+                      {extractChoiceNumber(question.choices[userAnswers[index]])}
+                    </div>
+                  )}
                   <div className="text-sm text-gray-600 dark:text-gray-400">
                     正解:{" "}
                     {extractChoiceNumber(
@@ -321,35 +343,37 @@ export default function Quiz({
 
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4 dark:from-gray-900 dark:to-gray-800">
         <div className="w-full max-w-3xl rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-800 md:p-8">
-          <div className="mb-6 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              {onBackToCategory && (
-                <button
-                  onClick={handleBackClick}
-                  className="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
-                  aria-label="戻る"
-                >
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+          <div className="mb-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4 flex-1 min-w-0">
+                {onBackToCategory && (
+                  <button
+                    onClick={handleBackClick}
+                    className="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 flex-shrink-0"
+                    aria-label="戻る"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
-                </button>
-              )}
-              <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 md:text-3xl">
-                クイズ
-              </h1>
-            </div>
-            <div className="text-lg font-semibold text-gray-600 dark:text-gray-400">
-              {currentQuestionIndex + 1} / {questions.length}
+                    <svg
+                      className="h-6 w-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 19l-7-7 7-7"
+                      />
+                    </svg>
+                  </button>
+                )}
+                <h1 className="text-xl font-bold text-gray-800 dark:text-gray-100 md:text-2xl truncate">
+                  {formatCategoryDisplay(category)}
+                </h1>
+              </div>
+              <div className="text-lg font-semibold text-gray-600 dark:text-gray-400 flex-shrink-0 ml-4">
+                {currentQuestionIndex + 1} / {questions.length}
+              </div>
             </div>
           </div>
 
