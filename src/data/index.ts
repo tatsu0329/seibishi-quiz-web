@@ -1,7 +1,12 @@
 // 問題集ファイルをインポート
 // 国家1級
-import level1C2024 from "./questionSets/level-1-C-2024.json";
 import level1C2023 from "./questionSets/level-1-C-2023.json";
+import level1C20252 from "./questionSets/level-1-C-2025-2.json";
+import level1C20222 from "./questionSets/level-1-C-2022-2.json";
+import level1C20232 from "./questionSets/level-1-C-2023-2.json";
+import level1C20242 from "./questionSets/level-1-C-2024-2.json";
+
+
 
 // 国家2級 - ガソリン
 import level2G20251 from "./questionSets/level-2-G-2025-1.json";
@@ -42,9 +47,12 @@ import level3D20222 from "./questionSets/level-3-D-2022-2.json";
 // 全問題セットを配列としてエクスポート
 export default [
   // 国家1級
-  level1C2024,
   level1C2023,
-  
+  level1C20252,
+  level1C20222,
+  level1C20232,
+  level1C20242,
+
   // 国家2級 - ガソリン
   level2G20251,
   level2G20241,
@@ -53,7 +61,7 @@ export default [
   level2G20232,
   level2G20221,
   level2G20222,
-  
+
   // 国家2級 - ジーゼル
   level2D20251,
   level2D20241,
@@ -62,7 +70,7 @@ export default [
   level2D20232,
   level2D20221,
   level2D20222,
-  
+
   // 国家3級 - ガソリン
   level3G20251,
   level3G20241,
@@ -71,7 +79,7 @@ export default [
   level3G20232,
   level3G20221,
   level3G20222,
-  
+
   // 国家3級 - ジーゼル
   level3D20251,
   level3D20241,
@@ -98,4 +106,5 @@ export interface Question {
   choices: string[];
   answerIndex: number;
   explanation?: string;
+  images?: string[];
 }

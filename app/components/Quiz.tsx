@@ -19,6 +19,7 @@ interface Question {
   choices: string[];
   answerIndex: number;
   explanation?: string;
+  images?: string[];
 }
 
 interface QuizProps {
@@ -52,6 +53,8 @@ export default function Quiz({
   const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set());
   const [showSaveConfirm, setShowSaveConfirm] = useState(false);
   const [isReviewMode, setIsReviewMode] = useState(false);
+  const [expandedResults, setExpandedResults] = useState<Set<string>>(new Set());
+  const [zoomedImage, setZoomedImage] = useState<string | null>(null);
 
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
@@ -197,7 +200,20 @@ export default function Quiz({
     setSelectedAnswer(null);
     setIsAnswered(false);
     setShowResult(false);
+    setExpandedResults(new Set());
     onReviewIncorrect(incorrectQuestions);
+  };
+
+  const toggleResultExpansion = (questionId: string) => {
+    setExpandedResults((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(questionId)) {
+        newSet.delete(questionId);
+      } else {
+        newSet.add(questionId);
+      }
+      return newSet;
+    });
   };
 
   if (showResult) {
@@ -235,41 +251,168 @@ export default function Quiz({
                 return null;
               }
               const isCorrect = userAnswers[index] === question.answerIndex - 1;
+              const userAnswerIndex = userAnswers[index];
+              const isBookmarked = bookmarkedIds.has(question.id);
+              const isExpanded = expandedResults.has(question.id);
+              
               return (
                 <div
                   key={question.id}
-                  className={`rounded-lg border-2 p-4 ${
+                  className={`rounded-lg border-2 overflow-hidden ${
                     isCorrect
                       ? "border-green-500 bg-green-50 dark:border-green-400 dark:bg-green-900/20"
                       : "border-red-500 bg-red-50 dark:border-red-400 dark:bg-red-900/20"
                   }`}
                 >
-                  <div className="mb-2 flex items-center justify-between">
-                    <span className="font-semibold text-gray-700 dark:text-gray-300">
-                      {question.id}
-                    </span>
-                    <span
-                      className={`font-bold ${
-                        isCorrect
-                          ? "text-green-600 dark:text-green-400"
-                          : "text-red-600 dark:text-red-400"
-                      }`}
-                    >
-                      {isCorrect ? "正解" : "不正解"}
-                    </span>
+                  {/* ヘッダー部分（常に表示） */}
+                  <div
+                    onClick={() => toggleResultExpansion(question.id)}
+                    className="p-4 cursor-pointer hover:opacity-80 transition-opacity"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <svg
+                          className={`h-5 w-5 flex-shrink-0 text-gray-500 dark:text-gray-400 transition-transform ${
+                            isExpanded ? "rotate-90" : ""
+                          }`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                        <span className="font-semibold text-gray-700 dark:text-gray-300">
+                          {question.id}
+                        </span>
+                        {isBookmarked && (
+                          <svg
+                            className="h-5 w-5 fill-yellow-500"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                          </svg>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-3">
+                        {/* 回答サマリー（常に表示） */}
+                        <div className="text-xs text-gray-600 dark:text-gray-400">
+                          {userAnswerIndex !== undefined && userAnswerIndex < question.choices.length && (
+                            <span>
+                              選択: {extractChoiceNumber(question.choices[userAnswerIndex])}
+                            </span>
+                          )}
+                          {" / "}
+                          <span className="text-green-600 dark:text-green-400 font-semibold">
+                            正解: {extractChoiceNumber(question.choices[question.answerIndex - 1])}
+                          </span>
+                        </div>
+                        <span
+                          className={`font-bold ${
+                            isCorrect
+                              ? "text-green-600 dark:text-green-400"
+                              : "text-red-600 dark:text-red-400"
+                          }`}
+                        >
+                          {isCorrect ? "正解" : "不正解"}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  {userAnswers[index] !== undefined && userAnswers[index] < question.choices.length && (
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
-                      選択した答え:{" "}
-                      {extractChoiceNumber(question.choices[userAnswers[index]])}
+                  
+                  {/* 折りたたみ可能な詳細部分 */}
+                  {isExpanded && (
+                    <div className="border-t border-current/20 px-4 pb-4 pt-3">
+                      {/* 問題文 */}
+                      <div className="mb-3 text-sm text-gray-800 dark:text-gray-200">
+                        {question.question}
+                      </div>
+                      
+                      {/* 画像表示 */}
+                      {question.images && question.images.length > 0 && (
+                        <div className="mb-3 space-y-2">
+                          {question.images.map((imagePath, imgIndex) => (
+                            <div key={imgIndex} className="relative">
+                              <img
+                                src={imagePath}
+                                alt={`問題図 ${imgIndex + 1}`}
+                                className="w-full max-w-md mx-auto rounded-lg border-2 border-gray-200 dark:border-gray-600 cursor-zoom-in hover:opacity-90 transition-opacity"
+                                onClick={() => setZoomedImage(imagePath)}
+                              />
+                              <div className="mt-1 text-center text-xs text-gray-500 dark:text-gray-400">
+                                画像をクリックで拡大表示
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      
+                      {/* 全ての選択肢 */}
+                      <div className="mb-3">
+                        <div className="mb-2 text-xs font-semibold text-gray-600 dark:text-gray-400">
+                          選択肢:
+                        </div>
+                        <div className="space-y-1">
+                          {question.choices.map((choice, choiceIndex) => {
+                            const isUserAnswer = choiceIndex === userAnswerIndex;
+                            const isCorrectAnswer = choiceIndex === question.answerIndex - 1;
+                            
+                            let borderColor = "border-gray-200 dark:border-gray-600";
+                            let bgColor = "bg-white dark:bg-gray-700";
+                            
+                            if (isCorrectAnswer) {
+                              borderColor = "border-green-500 dark:border-green-400";
+                              bgColor = "bg-green-50 dark:bg-green-900/20";
+                            } else if (isUserAnswer && !isCorrect) {
+                              borderColor = "border-red-500 dark:border-red-400";
+                              bgColor = "bg-red-50 dark:bg-red-900/20";
+                            }
+                            
+                            return (
+                              <div
+                                key={choiceIndex}
+                                className={`rounded border-2 ${borderColor} ${bgColor} p-2 text-xs`}
+                              >
+                                <div className="flex items-start justify-between gap-2">
+                                  <span className="flex-1 text-gray-800 dark:text-gray-200">
+                                    {choice}
+                                  </span>
+                                  <div className="flex items-center gap-1">
+                                    {isCorrectAnswer && (
+                                      <span className="font-bold text-green-600 dark:text-green-400">
+                                        ✓ 正解
+                                      </span>
+                                    )}
+                                    {isUserAnswer && (
+                                      <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
+                                        [選択]
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      
+                      {/* 解説 */}
+                      {question.explanation && (
+                        <div className="rounded-lg bg-blue-50 p-3 dark:bg-blue-900/20">
+                          <div className="mb-1 text-xs font-semibold text-blue-800 dark:text-blue-300">
+                            解説
+                          </div>
+                          <div className="whitespace-pre-line text-xs text-blue-900 dark:text-blue-200">
+                            {question.explanation}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
-                    正解:{" "}
-                    {extractChoiceNumber(
-                      question.choices[question.answerIndex - 1]
-                    )}
-                  </div>
                 </div>
               );
             })}
@@ -307,6 +450,42 @@ export default function Quiz({
 
   return (
     <>
+      {/* 画像拡大表示モーダル */}
+      {zoomedImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+          onClick={() => setZoomedImage(null)}
+        >
+          <div className="relative max-w-full max-h-full">
+            <button
+              onClick={() => setZoomedImage(null)}
+              className="absolute -top-12 right-0 rounded-lg bg-white/20 p-2 text-white hover:bg-white/30 transition-colors"
+              aria-label="閉じる"
+            >
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <img
+              src={zoomedImage}
+              alt="問題図"
+              className="max-w-full max-h-[90vh] object-contain rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )}
+
       {/* 保存確認ダイアログ */}
       {showSaveConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -344,34 +523,32 @@ export default function Quiz({
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4 dark:from-gray-900 dark:to-gray-800">
         <div className="w-full max-w-3xl rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-800 md:p-8">
           <div className="mb-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4 flex-1 min-w-0">
-                {onBackToCategory && (
-                  <button
-                    onClick={handleBackClick}
-                    className="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 flex-shrink-0"
-                    aria-label="戻る"
+            <div className="flex items-center gap-4">
+              {onBackToCategory && (
+                <button
+                  onClick={handleBackClick}
+                  className="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 flex-shrink-0"
+                  aria-label="戻る"
+                >
+                  <svg
+                    className="h-6 w-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    <svg
-                      className="h-6 w-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 19l-7-7 7-7"
-                      />
-                    </svg>
-                  </button>
-                )}
-                <h1 className="text-xl font-bold text-gray-800 dark:text-gray-100 md:text-2xl truncate">
-                  {formatCategoryDisplay(category)}
-                </h1>
-              </div>
-              <div className="text-lg font-semibold text-gray-600 dark:text-gray-400 flex-shrink-0 ml-4">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                </button>
+              )}
+              <h1 className="text-xl font-bold text-gray-800 dark:text-gray-100 md:text-2xl lg:text-3xl flex-1 min-w-0 truncate">
+                {formatCategoryDisplay(category)}
+              </h1>
+              <div className="text-lg font-semibold text-gray-600 dark:text-gray-400 flex-shrink-0">
                 {currentQuestionIndex + 1} / {questions.length}
               </div>
             </div>
@@ -415,6 +592,25 @@ export default function Quiz({
           <div className="mb-6 whitespace-pre-line text-lg leading-relaxed text-gray-800 dark:text-gray-200">
             {currentQuestion.question}
           </div>
+          
+          {/* 画像表示 */}
+          {currentQuestion.images && currentQuestion.images.length > 0 && (
+            <div className="mb-4 space-y-2">
+              {currentQuestion.images.map((imagePath, imgIndex) => (
+                <div key={imgIndex} className="relative">
+                  <img
+                    src={imagePath}
+                    alt={`問題図 ${imgIndex + 1}`}
+                    className="w-full max-w-md mx-auto rounded-lg border-2 border-gray-200 dark:border-gray-600 cursor-zoom-in hover:opacity-90 transition-opacity"
+                    onClick={() => setZoomedImage(imagePath)}
+                  />
+                  <div className="mt-1 text-center text-xs text-gray-500 dark:text-gray-400">
+                    画像をクリックで拡大表示
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="mb-6 space-y-3">

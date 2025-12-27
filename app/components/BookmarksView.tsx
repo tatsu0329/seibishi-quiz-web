@@ -93,16 +93,31 @@ export default function BookmarksView({ onBack }: BookmarksViewProps) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4 dark:from-gray-900 dark:to-gray-800">
         <div className="w-full max-w-2xl rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800">
-          <div className="mb-8 flex items-center justify-between">
-            <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100">
-              ブックマーク
-            </h1>
-            <button
-              onClick={onBack}
-              className="rounded-lg bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
-            >
-              戻る
-            </button>
+          <div className="mb-8">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={onBack}
+                className="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 flex-shrink-0"
+                aria-label="戻る"
+              >
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+              <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 md:text-3xl flex-1">
+                ブックマーク
+              </h1>
+            </div>
           </div>
 
           {groupedBookmarks.length === 0 ? (
@@ -166,35 +181,37 @@ export default function BookmarksView({ onBack }: BookmarksViewProps) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4 dark:from-gray-900 dark:to-gray-800">
       <div className="w-full max-w-4xl rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800">
-        <div className="mb-6 flex items-center gap-4">
-          <button
-            onClick={() => {
-              setSelectedCategory(null);
-              setExpandedBookmarks(new Set());
-            }}
-            className="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
-            aria-label="戻る"
-          >
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        <div className="mb-8">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => {
+                setSelectedCategory(null);
+                setExpandedBookmarks(new Set());
+              }}
+              className="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 flex-shrink-0"
+              aria-label="戻る"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </button>
-          <div className="flex-1">
-            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-              {formatCategoryDisplay(selectedGroup.category)}
-            </h1>
-            <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-              {selectedGroup.bookmarks.length}問のブックマーク
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <div className="flex-1">
+              <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 md:text-3xl">
+                {formatCategoryDisplay(selectedGroup.category)}
+              </h1>
+              <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                {selectedGroup.bookmarks.length}問のブックマーク
+              </div>
             </div>
           </div>
         </div>

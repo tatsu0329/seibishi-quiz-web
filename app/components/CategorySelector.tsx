@@ -201,12 +201,13 @@ export default function CategorySelector({
       )}
 
       <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4 dark:from-gray-900 dark:to-gray-800">
-        <div className="w-full max-w-2xl rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800">
-          <div className="mb-8 flex items-center justify-between">
-            <h1 className="text-center text-4xl font-bold text-gray-800 dark:text-gray-100">
-              問題集を選択
-            </h1>
-            <div className="flex gap-2">
+        <div className="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-800 md:p-8">
+          <div className="mb-8">
+            <div className="flex items-center justify-between">
+              <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 md:text-3xl flex-1">
+                問題集を選択
+              </h1>
+              <div className="flex gap-2">
               {onShowBookmarks && (
                 <button
                   onClick={onShowBookmarks}
@@ -224,6 +225,7 @@ export default function CategorySelector({
                 </button>
               )}
             </div>
+          </div>
           </div>
 
           <div className="space-y-6">

@@ -16,23 +16,44 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    // サーバーサイドレンダリング時のハイドレーション問題を回避
     const savedTheme = localStorage.getItem("theme") as Theme | null;
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     
     const initialTheme = savedTheme || (prefersDark ? "dark" : "light");
     setTheme(initialTheme);
-    document.documentElement.classList.toggle("dark", initialTheme === "dark");
+    
+    // darkクラスを確実に追加/削除
+    if (initialTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    
+    setMounted(true);
   }, []);
 
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
+    console.log("テーマを切り替え:", theme, "→", newTheme);
+    
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
+    
+    // darkクラスを確実に追加/削除
+    const htmlElement = document.documentElement;
+    if (newTheme === "dark") {
+      htmlElement.classList.add("dark");
+      console.log("darkクラスを追加");
+    } else {
+      htmlElement.classList.remove("dark");
+      console.log("darkクラスを削除");
+    }
+    
+    console.log("現在のHTMLクラス:", htmlElement.className);
   };
 
-  // マウント前でもコンテキストを提供する（デフォルト値を設定）
+  // マウント前でもコンテキストを提供する（ハイドレーション問題を回避）
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
