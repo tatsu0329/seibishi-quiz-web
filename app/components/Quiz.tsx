@@ -334,9 +334,14 @@ export default function Quiz({
                       
                       {/* 画像表示 */}
                       {question.images && question.images.length > 0 && (
-                        <div className="mb-3 space-y-2">
+                        <div className="mb-3 space-y-4">
                           {question.images.map((imagePath, imgIndex) => (
                             <div key={imgIndex} className="relative">
+                              {question.images && question.images.length > 1 && (
+                                <div className="mb-2 text-center text-sm font-medium text-gray-600 dark:text-gray-400">
+                                  図 {imgIndex + 1}
+                                </div>
+                              )}
                               <img
                                 src={imagePath}
                                 alt={`問題図 ${imgIndex + 1}`}
@@ -595,9 +600,14 @@ export default function Quiz({
           
           {/* 画像表示 */}
           {currentQuestion.images && currentQuestion.images.length > 0 && (
-            <div className="mb-4 space-y-2">
+            <div className="mb-4 space-y-4">
               {currentQuestion.images.map((imagePath, imgIndex) => (
                 <div key={imgIndex} className="relative">
+                  {currentQuestion.images && currentQuestion.images.length > 1 && (
+                    <div className="mb-2 text-center text-sm font-medium text-gray-600 dark:text-gray-400">
+                      図 {imgIndex + 1}
+                    </div>
+                  )}
                   <img
                     src={imagePath}
                     alt={`問題図 ${imgIndex + 1}`}
