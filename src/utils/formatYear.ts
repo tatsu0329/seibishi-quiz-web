@@ -36,3 +36,4 @@ export function formatCategoryDisplay(category: {
   return `${category.level} ${category.fuelType} ${reiwaYear} ${sessionNumber}`;
 }
 
+

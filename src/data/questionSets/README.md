@@ -80,3 +80,4 @@ export default [
   level3Diesel2024, // ここに追加
 ];
 ```
+
