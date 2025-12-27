@@ -1,7 +1,7 @@
 // 問題集ファイルをインポート
 // 国家1級
-import level1Gasoline2024 from "./questionSets/level-1-gasoline-2024.json";
-import level1Gasoline2023 from "./questionSets/level-1-gasoline-2023.json";
+import level1C2024 from "./questionSets/level-1-C-2024.json";
+import level1C2023 from "./questionSets/level-1-C-2023.json";
 
 // 国家2級 - ガソリン
 import level2G20251 from "./questionSets/level-2-G-2025-1.json";
@@ -42,8 +42,8 @@ import level3D20222 from "./questionSets/level-3-D-2022-2.json";
 // 全問題セットを配列としてエクスポート
 export default [
   // 国家1級
-  level1Gasoline2024,
-  level1Gasoline2023,
+  level1C2024,
+  level1C2023,
   
   // 国家2級 - ガソリン
   level2G20251,
