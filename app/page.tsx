@@ -44,7 +44,7 @@ export default function Home() {
   }
 
   if (selectedQuiz) {
-    return (
+  return (
       <>
         <ThemeToggle />
         <Quiz

@@ -9,6 +9,7 @@ import {
   deleteQuizProgress,
 } from "@/src/utils/storage";
 import AdSense from "./AdSense";
+import Footer from "./Footer";
 
 interface CategorySelectorProps {
   questionSets: QuestionSet[];
@@ -201,8 +202,9 @@ export default function CategorySelector({
         </div>
       )}
 
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4 dark:from-gray-900 dark:to-gray-800">
-        <div className="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-800 md:p-8">
+      <div className="flex min-h-screen flex-col bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+        <div className="flex-1 flex items-center justify-center p-4">
+          <div className="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-800 md:p-8">
           <div className="mb-8">
             <div className="flex items-center justify-between">
               <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 md:text-3xl flex-1">
@@ -226,7 +228,6 @@ export default function CategorySelector({
                 </button>
               )}
             </div>
-          </div>
           </div>
 
           <div className="space-y-6">
@@ -361,8 +362,11 @@ export default function CategorySelector({
               style={{ minHeight: "100px" }}
             />
           </div>
+          </div>
+        </div>
         </div>
       </div>
+      <Footer />
     </div>
     </>
   );
