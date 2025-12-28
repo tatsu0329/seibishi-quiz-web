@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { getQuizResults, type QuizResult } from "@/src/utils/storage";
 import { formatCategoryDisplay } from "@/src/utils/formatYear";
+import { trackStatsView } from "@/src/utils/analytics";
 
 interface StatsViewProps {
   onBack: () => void;
@@ -11,21 +12,34 @@ interface StatsViewProps {
 export default function StatsView({ onBack }: StatsViewProps) {
   const results = getQuizResults();
 
+  useEffect(() => {
+    // 統計画面表示のトラッキング
+    trackStatsView();
+  }, []);
+
   const stats = useMemo(() => {
     if (results.length === 0) return null;
 
     const totalQuizzes = results.length;
-    const totalQuestions = results.reduce((sum, r) => sum + r.totalQuestions, 0);
-    const totalCorrect = results.reduce((sum, r) => sum + r.correctCount, 0);
-    const overallPercentage = Math.round(
-      (totalCorrect / totalQuestions) * 100
+    const totalQuestions = results.reduce(
+      (sum, r) => sum + r.totalQuestions,
+      0
     );
+    const totalCorrect = results.reduce((sum, r) => sum + r.correctCount, 0);
+    const overallPercentage = Math.round((totalCorrect / totalQuestions) * 100);
 
     // カテゴリごとの統計
-    const categoryStats = new Map<string, { count: number; correct: number; total: number }>();
+    const categoryStats = new Map<
+      string,
+      { count: number; correct: number; total: number }
+    >();
     results.forEach((result) => {
       const key = `${result.category.level}-${result.category.fuelType}-${result.category.year}`;
-      const existing = categoryStats.get(key) || { count: 0, correct: 0, total: 0 };
+      const existing = categoryStats.get(key) || {
+        count: 0,
+        correct: 0,
+        total: 0,
+      };
       categoryStats.set(key, {
         count: existing.count + 1,
         correct: existing.correct + result.correctCount,
@@ -50,11 +64,13 @@ export default function StatsView({ onBack }: StatsViewProps) {
       overallPercentage,
       averagePercentage,
       bestResult,
-      categoryStats: Array.from(categoryStats.entries()).map(([key, stats]) => ({
-        key,
-        ...stats,
-        percentage: Math.round((stats.correct / stats.total) * 100),
-      })),
+      categoryStats: Array.from(categoryStats.entries()).map(
+        ([key, stats]) => ({
+          key,
+          ...stats,
+          percentage: Math.round((stats.correct / stats.total) * 100),
+        })
+      ),
     };
   }, [results]);
 
@@ -125,7 +141,9 @@ export default function StatsView({ onBack }: StatsViewProps) {
                   最高得点
                 </div>
                 <div className="mt-2 text-2xl font-bold text-yellow-900 dark:text-yellow-100">
-                  {stats.bestResult.correctCount} / {stats.bestResult.totalQuestions} ({stats.bestResult.percentage}%)
+                  {stats.bestResult.correctCount} /{" "}
+                  {stats.bestResult.totalQuestions} (
+                  {stats.bestResult.percentage}%)
                 </div>
                 <div className="mt-1 text-sm text-yellow-700 dark:text-yellow-400">
                   {formatCategoryDisplay(stats.bestResult.category)}
@@ -224,4 +242,3 @@ export default function StatsView({ onBack }: StatsViewProps) {
     </div>
   );
 }
-

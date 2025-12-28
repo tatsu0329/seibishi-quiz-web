@@ -12,6 +12,16 @@ import {
   type QuizProgress,
 } from "@/src/utils/storage";
 import { formatCategoryDisplay } from "@/src/utils/formatYear";
+import {
+  trackQuizStart,
+  trackQuizComplete,
+  trackQuizRetireWithSave,
+  trackQuizRetireWithoutSave,
+  trackQuizRestart,
+  trackReviewModeStart,
+  trackBookmarkAdd,
+  trackBookmarkRemove,
+} from "@/src/utils/analytics";
 
 interface Question {
   id: string;
@@ -70,7 +80,16 @@ export default function Quiz({
       }
     });
     setBookmarkedIds(bookmarks);
-  }, [questions, category]);
+
+    // 問題集開始/再開のトラッキング
+    const isResumed = initialProgress !== null && initialProgress !== undefined;
+    const progressPercentage = initialProgress
+      ? Math.round(
+          (initialProgress.currentQuestionIndex / questions.length) * 100
+        )
+      : 0;
+    trackQuizStart(category, isResumed, progressPercentage);
+  }, [questions, category, initialProgress]);
 
   // 選択肢から番号部分（例: "(1)"）のみを抽出する関数
   const extractChoiceNumber = (choice: string): string => {
@@ -82,6 +101,7 @@ export default function Quiz({
     const isBookmarked = bookmarkedIds.has(questionId);
     if (isBookmarked) {
       removeBookmark(questionId, category);
+      trackBookmarkRemove(category, questionId);
       setBookmarkedIds((prev) => {
         const newSet = new Set(prev);
         newSet.delete(questionId);
@@ -97,6 +117,7 @@ export default function Quiz({
         explanation: currentQuestion.explanation,
         timestamp: Date.now(),
       });
+      trackBookmarkAdd(category, questionId);
       setBookmarkedIds((prev) => new Set(prev).add(questionId));
     }
   };
@@ -141,6 +162,15 @@ export default function Quiz({
       // 完了したら進捗を削除
       deleteQuizProgress(category);
 
+      // 回答完了のトラッキング
+      trackQuizComplete(
+        category,
+        correctCount,
+        questions.length,
+        percentage,
+        isReviewMode
+      );
+
       setShowResult(true);
     } else {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -159,12 +189,29 @@ export default function Quiz({
       questionIds: questions.map((q) => q.id),
     };
     saveQuizProgress(progress);
+
+    // 保存して終了のトラッキング
+    trackQuizRetireWithSave(
+      category,
+      currentQuestionIndex,
+      questions.length,
+      userAnswers.length
+    );
+
     if (onBackToCategory) {
       onBackToCategory();
     }
   };
 
   const handleExitWithoutSaving = () => {
+    // 保存せずに終了のトラッキング
+    trackQuizRetireWithoutSave(
+      category,
+      currentQuestionIndex,
+      questions.length,
+      userAnswers.length
+    );
+
     setShowSaveConfirm(false);
     if (onBackToCategory) {
       onBackToCategory();
@@ -183,6 +230,10 @@ export default function Quiz({
 
   const handleRestart = () => {
     deleteQuizProgress(category); // 進捗を削除
+
+    // リスタートのトラッキング
+    trackQuizRestart(category);
+
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
     setIsAnswered(false);
@@ -195,6 +246,10 @@ export default function Quiz({
     const incorrectQuestions = questions.filter(
       (q, index) => userAnswers[index] !== q.answerIndex - 1
     );
+
+    // 復習モード開始のトラッキング
+    trackReviewModeStart(category, incorrectQuestions.length, questions.length);
+
     // 復習モードに移行する前に、すべての状態をリセット
     setIsReviewMode(true);
     setUserAnswers([]);

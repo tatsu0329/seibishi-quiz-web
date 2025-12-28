@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { getBookmarks, getCategoryKey, removeBookmark } from "@/src/utils/storage";
 import { formatCategoryDisplay } from "@/src/utils/formatYear";
+import { trackBookmarksView } from "@/src/utils/analytics";
 import type { Bookmark } from "@/src/utils/storage";
 
 interface BookmarksViewProps {
@@ -13,6 +14,11 @@ export default function BookmarksView({ onBack }: BookmarksViewProps) {
   const [bookmarks, setBookmarks] = useState(getBookmarks());
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [expandedBookmarks, setExpandedBookmarks] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    // ブックマーク一覧表示のトラッキング
+    trackBookmarksView();
+  }, []);
 
   // ブックマーク一覧を更新
   const refreshBookmarks = () => {
