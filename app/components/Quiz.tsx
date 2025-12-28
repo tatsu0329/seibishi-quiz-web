@@ -53,7 +53,9 @@ export default function Quiz({
   const [bookmarkedIds, setBookmarkedIds] = useState<Set<string>>(new Set());
   const [showSaveConfirm, setShowSaveConfirm] = useState(false);
   const [isReviewMode, setIsReviewMode] = useState(false);
-  const [expandedResults, setExpandedResults] = useState<Set<string>>(new Set());
+  const [expandedResults, setExpandedResults] = useState<Set<string>>(
+    new Set()
+  );
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
 
   const currentQuestion = questions[currentQuestionIndex];
@@ -254,7 +256,7 @@ export default function Quiz({
               const userAnswerIndex = userAnswers[index];
               const isBookmarked = bookmarkedIds.has(question.id);
               const isExpanded = expandedResults.has(question.id);
-              
+
               return (
                 <div
                   key={question.id}
@@ -301,14 +303,21 @@ export default function Quiz({
                       <div className="flex items-center gap-3">
                         {/* 回答サマリー（常に表示） */}
                         <div className="text-xs text-gray-600 dark:text-gray-400">
-                          {userAnswerIndex !== undefined && userAnswerIndex < question.choices.length && (
-                            <span>
-                              選択: {extractChoiceNumber(question.choices[userAnswerIndex])}
-                            </span>
-                          )}
+                          {userAnswerIndex !== undefined &&
+                            userAnswerIndex < question.choices.length && (
+                              <span>
+                                選択:{" "}
+                                {extractChoiceNumber(
+                                  question.choices[userAnswerIndex]
+                                )}
+                              </span>
+                            )}
                           {" / "}
                           <span className="text-green-600 dark:text-green-400 font-semibold">
-                            正解: {extractChoiceNumber(question.choices[question.answerIndex - 1])}
+                            正解:{" "}
+                            {extractChoiceNumber(
+                              question.choices[question.answerIndex - 1]
+                            )}
                           </span>
                         </div>
                         <span
@@ -323,7 +332,7 @@ export default function Quiz({
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* 折りたたみ可能な詳細部分 */}
                   {isExpanded && (
                     <div className="border-t border-current/20 px-4 pb-4 pt-3">
@@ -331,17 +340,18 @@ export default function Quiz({
                       <div className="mb-3 text-sm text-gray-800 dark:text-gray-200">
                         {question.question}
                       </div>
-                      
+
                       {/* 画像表示 */}
                       {question.images && question.images.length > 0 && (
                         <div className="mb-3 space-y-4">
                           {question.images.map((imagePath, imgIndex) => (
                             <div key={imgIndex} className="relative">
-                              {question.images && question.images.length > 1 && (
-                                <div className="mb-2 text-center text-sm font-medium text-gray-600 dark:text-gray-400">
-                                  図 {imgIndex + 1}
-                                </div>
-                              )}
+                              {question.images &&
+                                question.images.length > 1 && (
+                                  <div className="mb-2 text-center text-sm font-medium text-gray-600 dark:text-gray-400">
+                                    図 {imgIndex + 1}
+                                  </div>
+                                )}
                               <img
                                 src={imagePath}
                                 alt={`問題図 ${imgIndex + 1}`}
@@ -355,7 +365,7 @@ export default function Quiz({
                           ))}
                         </div>
                       )}
-                      
+
                       {/* 全ての選択肢 */}
                       <div className="mb-3">
                         <div className="mb-2 text-xs font-semibold text-gray-600 dark:text-gray-400">
@@ -363,20 +373,25 @@ export default function Quiz({
                         </div>
                         <div className="space-y-1">
                           {question.choices.map((choice, choiceIndex) => {
-                            const isUserAnswer = choiceIndex === userAnswerIndex;
-                            const isCorrectAnswer = choiceIndex === question.answerIndex - 1;
-                            
-                            let borderColor = "border-gray-200 dark:border-gray-600";
+                            const isUserAnswer =
+                              choiceIndex === userAnswerIndex;
+                            const isCorrectAnswer =
+                              choiceIndex === question.answerIndex - 1;
+
+                            let borderColor =
+                              "border-gray-200 dark:border-gray-600";
                             let bgColor = "bg-white dark:bg-gray-700";
-                            
+
                             if (isCorrectAnswer) {
-                              borderColor = "border-green-500 dark:border-green-400";
+                              borderColor =
+                                "border-green-500 dark:border-green-400";
                               bgColor = "bg-green-50 dark:bg-green-900/20";
                             } else if (isUserAnswer && !isCorrect) {
-                              borderColor = "border-red-500 dark:border-red-400";
+                              borderColor =
+                                "border-red-500 dark:border-red-400";
                               bgColor = "bg-red-50 dark:bg-red-900/20";
                             }
-                            
+
                             return (
                               <div
                                 key={choiceIndex}
@@ -404,7 +419,7 @@ export default function Quiz({
                           })}
                         </div>
                       </div>
-                      
+
                       {/* 解説 */}
                       {question.explanation && (
                         <div className="rounded-lg bg-blue-50 p-3 dark:bg-blue-900/20">
@@ -499,7 +514,8 @@ export default function Quiz({
               進捗を保存しますか？
             </h2>
             <p className="mb-6 text-gray-600 dark:text-gray-400">
-              現在の進捗（{userAnswers.length}/{questions.length}問）を保存して、後から続きを再開できます。
+              現在の進捗（{userAnswers.length}/{questions.length}
+              問）を保存して、後から続きを再開できます。
             </p>
             <div className="space-y-3">
               <button
@@ -559,176 +575,177 @@ export default function Quiz({
             </div>
           </div>
 
-        <div className="mb-6">
-          <div className="mb-4 flex items-center justify-between">
-            <div className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">
-              {currentQuestion.id}
-            </div>
-            <button
-              onClick={() => handleBookmarkToggle(currentQuestion.id)}
-              className="text-gray-400 hover:text-yellow-500 dark:hover:text-yellow-400"
-              aria-label="ブックマーク"
-            >
-              {bookmarkedIds.has(currentQuestion.id) ? (
-                <svg
-                  className="h-6 w-6 fill-yellow-500"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                </svg>
-              ) : (
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                  />
-                </svg>
-              )}
-            </button>
-          </div>
-          <div className="mb-6 whitespace-pre-line text-lg leading-relaxed text-gray-800 dark:text-gray-200">
-            {currentQuestion.question}
-          </div>
-          
-          {/* 画像表示 */}
-          {currentQuestion.images && currentQuestion.images.length > 0 && (
-            <div className="mb-4 space-y-4">
-              {currentQuestion.images.map((imagePath, imgIndex) => (
-                <div key={imgIndex} className="relative">
-                  {currentQuestion.images && currentQuestion.images.length > 1 && (
-                    <div className="mb-2 text-center text-sm font-medium text-gray-600 dark:text-gray-400">
-                      図 {imgIndex + 1}
-                    </div>
-                  )}
-                  <img
-                    src={imagePath}
-                    alt={`問題図 ${imgIndex + 1}`}
-                    className="w-full max-w-md mx-auto rounded-lg border-2 border-gray-200 dark:border-gray-600 cursor-zoom-in hover:opacity-90 transition-opacity"
-                    onClick={() => setZoomedImage(imagePath)}
-                  />
-                  <div className="mt-1 text-center text-xs text-gray-500 dark:text-gray-400">
-                    画像をクリックで拡大表示
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="mb-6 space-y-3">
-          {currentQuestion.choices.map((choice, index) => {
-            const isSelected = selectedAnswer === index;
-            const isCorrect = index === currentQuestion.answerIndex - 1;
-            const isWrong = isAnswered && isSelected && !isCorrect;
-
-            let buttonClass =
-              "w-full rounded-lg border-2 p-4 text-left transition-all";
-            if (isAnswered) {
-              if (isCorrect) {
-                buttonClass +=
-                  " border-green-500 bg-green-100 text-green-900 dark:border-green-400 dark:bg-green-900/20 dark:text-green-300";
-              } else if (isWrong) {
-                buttonClass +=
-                  " border-red-500 bg-red-100 text-red-900 dark:border-red-400 dark:bg-red-900/20 dark:text-red-300";
-              } else if (isSelected) {
-                buttonClass +=
-                  " border-blue-500 bg-blue-100 text-blue-900 dark:border-blue-400 dark:bg-blue-900/20 dark:text-blue-300";
-              } else {
-                buttonClass +=
-                  " border-gray-300 bg-gray-50 text-gray-600 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400";
-              }
-            } else {
-              buttonClass += isSelected
-                ? " border-indigo-500 bg-indigo-100 text-indigo-900 dark:border-indigo-400 dark:bg-indigo-900/20 dark:text-indigo-300"
-                : " border-gray-300 bg-white text-gray-800 hover:border-indigo-300 hover:bg-indigo-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600";
-            }
-
-            return (
+          <div className="mb-6">
+            <div className="mb-4 flex items-center justify-between">
+              <div className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">
+                {currentQuestion.id}
+              </div>
               <button
-                key={index}
-                onClick={() => handleAnswerSelect(index)}
-                disabled={isAnswered}
-                className={buttonClass}
+                onClick={() => handleBookmarkToggle(currentQuestion.id)}
+                className="text-gray-400 hover:text-yellow-500 dark:hover:text-yellow-400"
+                aria-label="ブックマーク"
               >
-                <div className="flex items-start justify-between gap-3">
-                  <span className="flex-1 text-left font-medium leading-relaxed">
-                    {choice}
-                  </span>
-                  {isAnswered && isCorrect && (
-                    <span className="flex-shrink-0 text-xl">✓</span>
-                  )}
-                  {isAnswered && isWrong && (
-                    <span className="flex-shrink-0 text-xl">✗</span>
-                  )}
-                </div>
+                {bookmarkedIds.has(currentQuestion.id) ? (
+                  <svg
+                    className="h-6 w-6 fill-yellow-500"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                  </svg>
+                ) : (
+                  <svg
+                    className="h-6 w-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                    />
+                  </svg>
+                )}
               </button>
-            );
-          })}
-        </div>
+            </div>
+            <div className="mb-6 whitespace-pre-line text-lg leading-relaxed text-gray-800 dark:text-gray-200">
+              {currentQuestion.question}
+            </div>
 
-        {isAnswered && (
-          <div className="mb-6 rounded-lg bg-gray-100 p-4 dark:bg-gray-700">
-            <div className="mb-2 flex items-center gap-2">
-              <span
-                className={`font-bold ${
-                  selectedAnswer === currentQuestion.answerIndex - 1
-                    ? "text-green-600 dark:text-green-400"
-                    : "text-red-600 dark:text-red-400"
-                }`}
-              >
-                {selectedAnswer === currentQuestion.answerIndex - 1
-                  ? "正解！"
-                  : "不正解"}
-              </span>
-            </div>
-            <div className="text-sm text-gray-700 dark:text-gray-300">
-              正解は「
-              {extractChoiceNumber(
-                currentQuestion.choices[currentQuestion.answerIndex - 1]
-              )}
-              」です。
-            </div>
-            {currentQuestion.explanation && (
-              <div className="mt-3 rounded-lg bg-blue-50 p-3 dark:bg-blue-900/20">
-                <div className="mb-1 text-xs font-semibold text-blue-800 dark:text-blue-300">
-                  解説
-                </div>
-                <div className="whitespace-pre-line text-sm text-blue-900 dark:text-blue-200">
-                  {currentQuestion.explanation}
-                </div>
+            {/* 画像表示 */}
+            {currentQuestion.images && currentQuestion.images.length > 0 && (
+              <div className="mb-4 space-y-4">
+                {currentQuestion.images.map((imagePath, imgIndex) => (
+                  <div key={imgIndex} className="relative">
+                    {currentQuestion.images &&
+                      currentQuestion.images.length > 1 && (
+                        <div className="mb-2 text-center text-sm font-medium text-gray-600 dark:text-gray-400">
+                          図 {imgIndex + 1}
+                        </div>
+                      )}
+                    <img
+                      src={imagePath}
+                      alt={`問題図 ${imgIndex + 1}`}
+                      className="w-full max-w-md mx-auto rounded-lg border-2 border-gray-200 dark:border-gray-600 cursor-zoom-in hover:opacity-90 transition-opacity"
+                      onClick={() => setZoomedImage(imagePath)}
+                    />
+                    <div className="mt-1 text-center text-xs text-gray-500 dark:text-gray-400">
+                      画像をクリックで拡大表示
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
           </div>
-        )}
 
-        <div className="flex gap-4">
-          {!isAnswered ? (
-            <button
-              onClick={handleSubmitAnswer}
-              disabled={selectedAnswer === null}
-              className="flex-1 rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white transition-colors disabled:cursor-not-allowed disabled:bg-gray-400 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
-            >
-              回答する
-            </button>
-          ) : (
-            <button
-              onClick={handleNext}
-              className="flex-1 rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
-            >
-              {isLastQuestion ? "結果を見る" : "次へ"}
-            </button>
+          <div className="mb-6 space-y-3">
+            {currentQuestion.choices.map((choice, index) => {
+              const isSelected = selectedAnswer === index;
+              const isCorrect = index === currentQuestion.answerIndex - 1;
+              const isWrong = isAnswered && isSelected && !isCorrect;
+
+              let buttonClass =
+                "w-full rounded-lg border-2 p-4 text-left transition-all";
+              if (isAnswered) {
+                if (isCorrect) {
+                  buttonClass +=
+                    " border-green-500 bg-green-100 text-green-900 dark:border-green-400 dark:bg-green-900/20 dark:text-green-300";
+                } else if (isWrong) {
+                  buttonClass +=
+                    " border-red-500 bg-red-100 text-red-900 dark:border-red-400 dark:bg-red-900/20 dark:text-red-300";
+                } else if (isSelected) {
+                  buttonClass +=
+                    " border-blue-500 bg-blue-100 text-blue-900 dark:border-blue-400 dark:bg-blue-900/20 dark:text-blue-300";
+                } else {
+                  buttonClass +=
+                    " border-gray-300 bg-gray-50 text-gray-600 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400";
+                }
+              } else {
+                buttonClass += isSelected
+                  ? " border-indigo-500 bg-indigo-100 text-indigo-900 dark:border-indigo-400 dark:bg-indigo-900/20 dark:text-indigo-300"
+                  : " border-gray-300 bg-white text-gray-800 hover:border-indigo-300 hover:bg-indigo-50 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600";
+              }
+
+              return (
+                <button
+                  key={index}
+                  onClick={() => handleAnswerSelect(index)}
+                  disabled={isAnswered}
+                  className={buttonClass}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <span className="flex-1 text-left font-medium leading-relaxed">
+                      {choice}
+                    </span>
+                    {isAnswered && isCorrect && (
+                      <span className="flex-shrink-0 text-xl">✓</span>
+                    )}
+                    {isAnswered && isWrong && (
+                      <span className="flex-shrink-0 text-xl">✗</span>
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {isAnswered && (
+            <div className="mb-6 rounded-lg bg-gray-100 p-4 dark:bg-gray-700">
+              <div className="mb-2 flex items-center gap-2">
+                <span
+                  className={`font-bold ${
+                    selectedAnswer === currentQuestion.answerIndex - 1
+                      ? "text-green-600 dark:text-green-400"
+                      : "text-red-600 dark:text-red-400"
+                  }`}
+                >
+                  {selectedAnswer === currentQuestion.answerIndex - 1
+                    ? "正解！"
+                    : "不正解"}
+                </span>
+              </div>
+              <div className="text-sm text-gray-700 dark:text-gray-300">
+                正解は「
+                {extractChoiceNumber(
+                  currentQuestion.choices[currentQuestion.answerIndex - 1]
+                )}
+                」です。
+              </div>
+              {currentQuestion.explanation && (
+                <div className="mt-3 rounded-lg bg-blue-50 p-3 dark:bg-blue-900/20">
+                  <div className="mb-1 text-xs font-semibold text-blue-800 dark:text-blue-300">
+                    解説
+                  </div>
+                  <div className="whitespace-pre-line text-sm text-blue-900 dark:text-blue-200">
+                    {currentQuestion.explanation}
+                  </div>
+                </div>
+              )}
+            </div>
           )}
+
+          <div className="flex gap-4">
+            {!isAnswered ? (
+              <button
+                onClick={handleSubmitAnswer}
+                disabled={selectedAnswer === null}
+                className="flex-1 rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white transition-colors disabled:cursor-not-allowed disabled:bg-gray-400 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+              >
+                回答する
+              </button>
+            ) : (
+              <button
+                onClick={handleNext}
+                className="flex-1 rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+              >
+                {isLastQuestion ? "結果を見る" : "次へ"}
+              </button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </>
   );
 }
