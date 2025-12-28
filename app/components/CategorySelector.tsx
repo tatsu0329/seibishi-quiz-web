@@ -8,6 +8,7 @@ import {
   hasQuizProgress,
   deleteQuizProgress,
 } from "@/src/utils/storage";
+import AdSense from "./AdSense";
 
 interface CategorySelectorProps {
   questionSets: QuestionSet[];
@@ -351,6 +352,15 @@ export default function CategorySelector({
               </button>
             </div>
           )}
+
+          {/* 広告表示エリア */}
+          <div className="mt-8">
+            <AdSense
+              slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_TOP || ""}
+              className="my-4"
+              style={{ minHeight: "100px" }}
+            />
+          </div>
         </div>
       </div>
     </div>

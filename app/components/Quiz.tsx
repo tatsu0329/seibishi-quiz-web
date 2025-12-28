@@ -22,6 +22,7 @@ import {
   trackBookmarkAdd,
   trackBookmarkRemove,
 } from "@/src/utils/analytics";
+import AdSense from "./AdSense";
 
 interface Question {
   id: string;
@@ -516,6 +517,15 @@ export default function Quiz({
                   カテゴリ選択に戻る
                 </button>
               )}
+            </div>
+
+            {/* 広告表示エリア */}
+            <div className="mt-8">
+              <AdSense
+                slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_RESULT || ""}
+                className="my-4"
+                style={{ minHeight: "100px" }}
+              />
             </div>
           </div>
         </div>

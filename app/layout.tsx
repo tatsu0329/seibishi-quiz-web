@@ -14,6 +14,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// AdSenseのパブリッシャーID
+const ADSENSE_PUBLISHER_ID =
+  process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID || "ca-pub-6569958937383358";
+
 export const metadata: Metadata = {
   title: "整備士クイズ",
   description: "自動車整備士資格試験の過去問題集",
@@ -26,6 +30,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" suppressHydrationWarning>
+      <head>
+        {/* Google AdSense - headタグ内に配置（Next.js App Router対応） */}
+        <script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}`}
+          crossOrigin="anonymous"
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -42,6 +54,7 @@ export default function RootLayout({
             gtag('config', 'G-XKBK5DTP9T');
           `}
         </Script>
+
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
