@@ -23,6 +23,7 @@ import {
   trackBookmarkRemove,
 } from "@/src/utils/analytics";
 import AdSense from "./AdSense";
+import Footer from "./Footer";
 
 interface Question {
   id: string;
@@ -284,8 +285,9 @@ export default function Quiz({
     const incorrectCount = questions.length - correctCount;
 
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4 dark:from-gray-900 dark:to-gray-800">
-        <div className="w-full max-w-2xl rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800">
+      <div className="flex min-h-screen flex-col bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+        <div className="flex-1 flex items-center justify-center py-8 px-4">
+          <div className="w-full max-w-2xl rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800">
           <h1 className="mb-4 text-center text-4xl font-bold text-gray-800 dark:text-gray-100">
             結果
           </h1>
@@ -530,11 +532,13 @@ export default function Quiz({
           </div>
         </div>
       </div>
+      <Footer />
+    </div>
     );
   }
 
   return (
-    <>
+    <div className="flex min-h-screen flex-col bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       {/* 画像拡大表示モーダル */}
       {zoomedImage && (
         <div
@@ -605,9 +609,8 @@ export default function Quiz({
           </div>
         </div>
       )}
-
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4 dark:from-gray-900 dark:to-gray-800">
-        <div className="w-full max-w-3xl rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-800 md:p-8">
+        <div className="flex-1 flex items-center justify-center py-8 px-4">
+          <div className="w-full max-w-3xl rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-800 md:p-8">
           <div className="mb-6">
             <div className="flex items-center gap-4">
               {onBackToCategory && (
@@ -791,6 +794,15 @@ export default function Quiz({
             </div>
           )}
 
+          {/* 広告表示エリア（問題回答画面） */}
+          <div className="my-6">
+            <AdSense
+              slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_QUESTION || ""}
+              className="my-4"
+              style={{ minHeight: "100px" }}
+            />
+          </div>
+
           <div className="flex gap-4">
             {!isAnswered ? (
               <button
@@ -811,6 +823,7 @@ export default function Quiz({
           </div>
         </div>
       </div>
-    </>
+      <Footer />
+    </div>
   );
 }

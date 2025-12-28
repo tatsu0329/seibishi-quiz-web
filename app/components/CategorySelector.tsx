@@ -203,7 +203,7 @@ export default function CategorySelector({
       )}
 
       <div className="flex min-h-screen flex-col bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
-        <div className="flex-1 flex items-center justify-center p-4">
+        <div className="flex-1 flex items-center justify-center py-8 px-4">
           <div className="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-800 md:p-8">
           <div className="mb-8">
             <div className="flex items-center justify-between">
@@ -354,14 +354,16 @@ export default function CategorySelector({
             </div>
           )}
 
-          {/* 広告表示エリア */}
-          <div className="mt-8">
-            <AdSense
-              slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_TOP || ""}
-              className="my-4"
-              style={{ minHeight: "100px" }}
-            />
-          </div>
+          {/* 広告表示エリア - すべて選択された場合のみ表示 */}
+          {canStart && (
+            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+              <div className="text-center">
+                <AdSense
+                  slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_TOP || "1211028287"}
+                />
+              </div>
+            </div>
+          )}
           </div>
         </div>
         </div>

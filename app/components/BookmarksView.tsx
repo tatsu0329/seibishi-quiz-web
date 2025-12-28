@@ -5,6 +5,8 @@ import { getBookmarks, getCategoryKey, removeBookmark } from "@/src/utils/storag
 import { formatCategoryDisplay } from "@/src/utils/formatYear";
 import { trackBookmarksView } from "@/src/utils/analytics";
 import type { Bookmark } from "@/src/utils/storage";
+import AdSense from "./AdSense";
+import Footer from "./Footer";
 
 interface BookmarksViewProps {
   onBack: () => void;
@@ -97,8 +99,9 @@ export default function BookmarksView({ onBack }: BookmarksViewProps) {
   // カテゴリ選択画面
   if (!selectedCategory) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4 dark:from-gray-900 dark:to-gray-800">
-        <div className="w-full max-w-2xl rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800">
+      <div className="flex min-h-screen flex-col bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+        <div className="flex-1 flex items-center justify-center py-8 px-4">
+          <div className="w-full max-w-2xl rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800">
           <div className="mb-8">
             <div className="flex items-center gap-4">
               <button
@@ -175,9 +178,20 @@ export default function BookmarksView({ onBack }: BookmarksViewProps) {
               ))}
             </div>
           )}
+
+          {/* 広告表示エリア */}
+          <div className="mt-8">
+            <AdSense
+              slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_BOOKMARKS || ""}
+              className="my-4"
+              style={{ minHeight: "100px" }}
+            />
+          </div>
         </div>
       </div>
-    );
+      <Footer />
+    </div>
+  );
   }
 
   // 選択されたカテゴリのブックマーク一覧
@@ -185,8 +199,9 @@ export default function BookmarksView({ onBack }: BookmarksViewProps) {
   if (!selectedGroup) return null;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4 dark:from-gray-900 dark:to-gray-800">
-      <div className="w-full max-w-4xl rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800">
+    <div className="flex min-h-screen flex-col bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="flex-1 flex items-center justify-center py-8 px-4">
+        <div className="w-full max-w-4xl rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800">
         <div className="mb-8">
           <div className="flex items-center gap-4">
             <button
@@ -369,8 +384,19 @@ export default function BookmarksView({ onBack }: BookmarksViewProps) {
               </div>
             );
           })}
+
+          {/* 広告表示エリア */}
+          <div className="mt-8">
+            <AdSense
+              slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_BOOKMARKS || ""}
+              className="my-4"
+              style={{ minHeight: "100px" }}
+            />
+          </div>
         </div>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 }

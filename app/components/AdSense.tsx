@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 // AdSenseのパブリッシャーID（環境変数から取得、または直接設定）
 const ADSENSE_PUBLISHER_ID =
@@ -18,21 +18,42 @@ interface AdSenseProps {
 
 export default function AdSense({
   slot,
-  style = { display: "block", textAlign: "center" },
+  style = { display: "block" },
   format = "auto",
   responsive = true,
   layout,
   layoutKey,
   className = "",
 }: AdSenseProps) {
+  const adElementRef = useRef<HTMLDivElement>(null);
+  const adInitializedRef = useRef(false);
+
   useEffect(() => {
-    try {
-      if (window.adsbygoogle && slot) {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      }
-    } catch (err) {
-      console.error("AdSense error:", err);
+    // 既に初期化済みの場合はスキップ
+    if (adInitializedRef.current || !slot) {
+      return;
     }
+
+    // 次のティックで実行して、DOMが完全にマウントされた後に実行されるようにする
+    const timeoutId = setTimeout(() => {
+      try {
+        if (window.adsbygoogle && adElementRef.current) {
+          const insElement = adElementRef.current.querySelector('.adsbygoogle');
+          // data-adsbygoogle-status属性が存在しない場合のみ初期化
+          if (insElement && !insElement.getAttribute('data-adsbygoogle-status')) {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+            adInitializedRef.current = true;
+          }
+        }
+      } catch (err) {
+        // エラーを無視（既に広告が読み込まれている場合など）
+        console.error("AdSense error:", err);
+      }
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [slot]);
 
   if (!ADSENSE_PUBLISHER_ID) {
@@ -57,7 +78,11 @@ export default function AdSense({
   }
 
   return (
-    <div className={`adsense-container ${className}`} style={style}>
+    <div 
+      ref={adElementRef} 
+      className={`adsense-container overflow-hidden ${className}`} 
+      style={style}
+    >
       <ins
         className="adsbygoogle"
         style={{ display: "block" }}

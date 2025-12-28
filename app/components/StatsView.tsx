@@ -4,6 +4,8 @@ import { useMemo, useEffect } from "react";
 import { getQuizResults, type QuizResult } from "@/src/utils/storage";
 import { formatCategoryDisplay } from "@/src/utils/formatYear";
 import { trackStatsView } from "@/src/utils/analytics";
+import AdSense from "./AdSense";
+import Footer from "./Footer";
 
 interface StatsViewProps {
   onBack: () => void;
@@ -75,8 +77,9 @@ export default function StatsView({ onBack }: StatsViewProps) {
   }, [results]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4 dark:from-gray-900 dark:to-gray-800">
-      <div className="w-full max-w-4xl rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800">
+    <div className="flex min-h-screen flex-col bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="flex-1 flex items-center justify-center py-8 px-4">
+        <div className="w-full max-w-4xl rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800">
         <div className="mb-6">
           <div className="flex items-center gap-4">
             <button
@@ -238,7 +241,18 @@ export default function StatsView({ onBack }: StatsViewProps) {
             まだクイズの結果がありません。
           </div>
         )}
+
+        {/* 広告表示エリア */}
+        <div className="mt-8">
+          <AdSense
+            slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_STATS || ""}
+            className="my-4"
+            style={{ minHeight: "100px" }}
+          />
+        </div>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 }

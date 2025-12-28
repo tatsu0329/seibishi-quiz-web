@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Footer from "../components/Footer";
+import AdSense from "../components/AdSense";
 
 export default function ContactPage() {
   return (
@@ -84,6 +85,15 @@ export default function ContactPage() {
                   • お問い合わせ内容によっては、ご返信できない場合もございます
                 </li>
               </ul>
+            </div>
+
+            {/* 広告表示エリア */}
+            <div className="mt-8">
+              <AdSense
+                slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_CONTACT || ""}
+                className="my-4"
+                style={{ minHeight: "100px" }}
+              />
             </div>
           </div>
         </div>

@@ -1,10 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Footer from "../components/Footer";
-
-export const metadata = {
-  title: "このサイトについて | 整備士クイズ",
-  description: "整備士クイズについての説明",
-};
+import AdSense from "../components/AdSense";
 
 export default function AboutPage() {
   return (
@@ -43,7 +41,7 @@ export default function AboutPage() {
                 整備士クイズとは
               </h2>
               <p className="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
-                整備士クイズは、自動車整備士資格試験の過去問題を学習できる無料のWebアプリケーションです。国家資格である自動車整備士（1級、2級、3級）の試験対策として、実際の過去問題を効率的に学習することができます。
+                整備士クイズは、自動車整備士資格試験を学習できる無料のWebアプリケーションです。国家資格である自動車整備士（1級、2級、3級）の試験対策として、過去問題を効率的に学習することができます。
               </p>
             </section>
 
@@ -54,10 +52,10 @@ export default function AboutPage() {
               <ul className="ml-6 list-disc space-y-3 text-gray-700 dark:text-gray-300">
                 <li>
                   <strong className="text-gray-800 dark:text-gray-100">
-                    過去問題の学習
+                    問題集の学習
                   </strong>
                   <br />
-                  国家1級、2級、3級の各等級、および小型自動車、ディーゼル、ガソリンなどの燃料タイプ別に問題を選択して学習できます。
+                  国家1級、2級、3級の各等級、および小型自動車、ディーゼル、ガソリンなどの燃料タイプ別に問題集を選択して学習できます。
                 </li>
                 <li>
                   <strong className="text-gray-800 dark:text-gray-100">
@@ -111,7 +109,7 @@ export default function AboutPage() {
               <ul className="ml-6 list-disc space-y-2 text-gray-700 dark:text-gray-300">
                 <li>国家1級小型自動車整備士</li>
                 <li>国家2級自動車整備士（ディーゼル、ガソリン）</li>
-                <li>国家3級自動車整備士（ガソリン）</li>
+                <li>国家3級自動車整備士（ディーゼル、ガソリン）</li>
               </ul>
             </section>
 
@@ -155,6 +153,15 @@ export default function AboutPage() {
                 よりご連絡ください。
               </p>
             </section>
+
+            {/* 広告表示エリア */}
+            <div className="mt-8">
+              <AdSense
+                slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ABOUT || ""}
+                className="my-4"
+                style={{ minHeight: "100px" }}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -162,4 +169,3 @@ export default function AboutPage() {
     </div>
   );
 }
-

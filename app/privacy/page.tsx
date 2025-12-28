@@ -1,10 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Footer from "../components/Footer";
-
-export const metadata = {
-  title: "プライバシーポリシー | 整備士クイズ",
-  description: "整備士クイズのプライバシーポリシー",
-};
+import AdSense from "../components/AdSense";
 
 export default function PrivacyPage() {
   return (
@@ -158,6 +156,15 @@ export default function PrivacyPage() {
                   よりご連絡ください。
                 </p>
               </section>
+
+              {/* 広告表示エリア */}
+              <div className="mt-8">
+                <AdSense
+                  slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_PRIVACY || ""}
+                  className="my-4"
+                  style={{ minHeight: "100px" }}
+                />
+              </div>
             </div>
           </div>
         </div>
