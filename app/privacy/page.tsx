@@ -100,17 +100,43 @@ export default function PrivacyPage() {
                   当サイトでは、Google AdSenseを使用して広告を配信しています。Google AdSenseは、ユーザーが他のウェブサイトにアクセスした際の情報に基づいて、適切な広告を配信するためにCookieを使用する場合があります。
                 </p>
                 <p className="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
-                  ユーザーは、Googleの広告設定ページで、パーソナライズ広告を無効にすることができます。
+                  Google AdSenseのCookieについて：
                 </p>
+                <ul className="mb-4 ml-6 list-disc space-y-2 text-gray-700 dark:text-gray-300">
+                  <li>Google AdSenseは、第三者配信の広告サービスを使用しています</li>
+                  <li>GoogleやGoogleのパートナーは、当サイトや他のサイトへの過去のアクセス情報に基づいて適切な広告を配信します</li>
+                  <li>Googleの広告Cookieを使用することで、Googleやそのパートナーが当サイトや他のサイトにアクセスした際の情報に基づいて広告を配信します</li>
+                  <li>ユーザーは、広告の配信設定を変更することで、パーソナライズ広告を無効にすることができます</li>
+                </ul>
                 <p className="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
-                  <a
-                    href="https://www.google.com/settings/ads"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-indigo-600 hover:underline dark:text-indigo-400"
-                  >
-                    https://www.google.com/settings/ads
-                  </a>
+                  パーソナライズ広告を無効にする方法：
+                </p>
+                <ul className="mb-4 ml-6 list-disc space-y-2 text-gray-700 dark:text-gray-300">
+                  <li>
+                    <a
+                      href="https://www.google.com/settings/ads"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-indigo-600 hover:underline dark:text-indigo-400"
+                    >
+                      Googleの広告設定ページ
+                    </a>
+                    でパーソナライズ広告を無効にすることができます
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.aboutads.info/choices/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-indigo-600 hover:underline dark:text-indigo-400"
+                    >
+                      www.aboutads.info
+                    </a>
+                    にアクセスして、パーソナライズ広告に使用されるCookieを無効にすることもできます
+                  </li>
+                </ul>
+                <p className="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
+                  パーソナライズ広告を無効にしても、広告は配信されますが、コンテンツや過去のアクセス情報に基づいた広告ではなくなります。
                 </p>
               </section>
 

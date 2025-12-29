@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://seibishi-quiz-web.vercel.app/sitemap.xml
+

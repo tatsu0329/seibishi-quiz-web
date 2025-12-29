@@ -18,6 +18,12 @@ export default function Footer() {
               このサイトについて
             </Link>
             <Link
+              href="/terms"
+              className="text-gray-600 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400"
+            >
+              利用規約
+            </Link>
+            <Link
               href="/privacy"
               className="text-gray-600 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400"
             >
