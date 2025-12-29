@@ -18,9 +18,11 @@ const geistMono = Geist_Mono({
 const ADSENSE_PUBLISHER_ID =
   process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID || "ca-pub-6569958937383358";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seibishi-quiz-web.vercel.app';
+const baseUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://seibishi-quiz-web.vercel.app";
 const siteName = "整備士クイズ";
-const defaultDescription = "自動車整備士資格試験の過去問題集。国家1級・2級・3級の過去問題を無料で学習できます。問題のシャッフル、間違えた問題の復習、ブックマーク機能など、効率的な学習をサポートします。";
+const defaultDescription =
+  "自動車整備士資格試験の過去問題集。国家1級・2級・3級の過去問題を無料で学習できます。問題のシャッフル、間違えた問題の復習、ブックマーク機能など、効率的な学習をサポートします。";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -84,7 +86,7 @@ export const metadata: Metadata = {
   },
   verification: {
     // Google Search Consoleの検証コードを追加する場合はここに
-    // google: "your-verification-code",
+    google: "iGf-PF9uOWYiJU0QpuGr559zSe4duSwiDVj9cL1niMs",
   },
 };
 
@@ -102,25 +104,23 @@ export default function RootLayout({
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_PUBLISHER_ID}`}
           crossOrigin="anonymous"
         />
-        {/* Google Analytics - headタグ内に配置（Google Search Console確認用） */}
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-XKBK5DTP9T"
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-XKBK5DTP9T');
-            `,
-          }}
-        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        {/* Google Analytics - Next.js Scriptコンポーネントを使用 */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-XKBK5DTP9T"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XKBK5DTP9T');
+          `}
+        </Script>
 
         <ThemeProvider>
           {children}
@@ -180,7 +180,8 @@ export default function RootLayout({
                 "@context": "https://schema.org",
                 "@type": "EducationalOccupationalCredential",
                 name: "自動車整備士資格試験",
-                description: "国家資格である自動車整備士（1級・2級・3級）の資格試験対策",
+                description:
+                  "国家資格である自動車整備士（1級・2級・3級）の資格試験対策",
                 credentialCategory: "Professional Certification",
                 recognizedBy: {
                   "@type": "Organization",

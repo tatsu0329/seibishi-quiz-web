@@ -289,7 +289,7 @@ export default function Quiz({
         <div className="flex-1 flex items-center justify-center py-8 px-4">
           <div className="w-full max-w-2xl rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-800">
           <h1 className="mb-4 text-center text-4xl font-bold text-gray-800 dark:text-gray-100">
-            結果
+            クイズ結果
           </h1>
           <div className="mb-6 rounded-lg bg-indigo-50 px-4 py-2 text-center dark:bg-indigo-900/20">
             <div className="text-sm font-medium text-indigo-700 dark:text-indigo-300">
@@ -636,7 +636,7 @@ export default function Quiz({
                 </button>
               )}
               <h1 className="text-xl font-bold text-gray-800 dark:text-gray-100 md:text-2xl lg:text-3xl flex-1 min-w-0 truncate">
-                {formatCategoryDisplay(category)}
+                {formatCategoryDisplay(category)} - 問題 {currentQuestionIndex + 1}
               </h1>
               <div className="text-lg font-semibold text-gray-600 dark:text-gray-400 flex-shrink-0">
                 {currentQuestionIndex + 1} / {questions.length}
