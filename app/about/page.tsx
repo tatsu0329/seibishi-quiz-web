@@ -70,7 +70,7 @@ export default function AboutPage() {
                     問題集の学習
                   </h3>
                   <p className="text-sm text-indigo-800 dark:text-indigo-200">
-                    国家1級、2級、3級の各等級、および小型自動車、ディーゼル、ガソリンなどの燃料タイプ別に問題集を選択して学習できます。トップページから<Link href="/" className="underline font-semibold">問題集を選択</Link>して、すぐに学習を始められます。
+                    国家1級、2級、3級の各等級、および小型自動車、ディーゼル、ガソリンなどの燃料タイプ別に問題集を選択して学習できます。<Link href="/select" className="underline font-semibold">問題集選択ページ</Link>から、すぐに学習を始められます。
                   </p>
                 </div>
                 <div className="rounded-lg border-l-4 border-green-500 bg-green-50 p-4 dark:bg-green-900/20">

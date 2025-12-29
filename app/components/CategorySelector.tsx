@@ -207,10 +207,13 @@ export default function CategorySelector({
         <div className="flex-1 flex items-center justify-center py-8 px-4">
           <div className="w-full max-w-2xl rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-800 md:p-8">
             <header className="mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 md:text-3xl flex-1">
-                  自動車整備士資格試験 過去問題集
-                </h1>
+              <div className="mb-4 flex items-center justify-between">
+                <Link
+                  href="/"
+                  className="text-sm text-indigo-600 hover:text-indigo-700 hover:underline dark:text-indigo-400 dark:hover:text-indigo-300"
+                >
+                  ← トップページに戻る
+                </Link>
                 <div className="flex gap-2">
                   {onShowBookmarks && (
                     <button
@@ -232,50 +235,12 @@ export default function CategorySelector({
                   )}
                 </div>
               </div>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
-                自動車整備士資格試験の過去問題を<strong className="text-gray-800 dark:text-gray-200">無料</strong>で学習できます。国家1級・2級・3級の各等級、燃料タイプ、実施年度を選択して、効率的に試験対策を行いましょう。
+              <h1 className="mb-4 text-2xl font-bold text-gray-800 dark:text-gray-100 md:text-3xl">
+                問題集を選択
+              </h1>
+              <p className="mb-4 text-gray-600 dark:text-gray-400 leading-relaxed">
+                国家1級・2級・3級の各等級、燃料タイプ、実施年度を選択して、効率的に試験対策を行いましょう。
               </p>
-              <div className="mb-4 rounded-lg bg-indigo-50 p-4 dark:bg-indigo-900/20">
-                <h2 className="mb-2 text-lg font-semibold text-indigo-900 dark:text-indigo-100">
-                  このサイトの特徴
-                </h2>
-                <ul className="space-y-1 text-sm text-indigo-800 dark:text-indigo-200">
-                  <li>✓ 過去問題を無料で学習可能</li>
-                  <li>✓ 問題のシャッフル機能で実践的な学習</li>
-                  <li>✓ 間違えた問題の復習機能</li>
-                  <li>✓ ブックマーク機能で重要問題を保存</li>
-                  <li>✓ 進捗の保存・再開機能</li>
-                </ul>
-              </div>
-              <nav className="flex flex-wrap gap-2 text-sm" aria-label="サイト内ナビゲーション">
-                <Link
-                  href="/about"
-                  className="text-indigo-600 hover:text-indigo-700 hover:underline dark:text-indigo-400 dark:hover:text-indigo-300"
-                >
-                  このサイトについて
-                </Link>
-                <span className="text-gray-400 dark:text-gray-600" aria-hidden="true">|</span>
-                <Link
-                  href="/terms"
-                  className="text-indigo-600 hover:text-indigo-700 hover:underline dark:text-indigo-400 dark:hover:text-indigo-300"
-                >
-                  利用規約
-                </Link>
-                <span className="text-gray-400 dark:text-gray-600" aria-hidden="true">|</span>
-                <Link
-                  href="/privacy"
-                  className="text-indigo-600 hover:text-indigo-700 hover:underline dark:text-indigo-400 dark:hover:text-indigo-300"
-                >
-                  プライバシーポリシー
-                </Link>
-                <span className="text-gray-400 dark:text-gray-600" aria-hidden="true">|</span>
-                <Link
-                  href="/contact"
-                  className="text-indigo-600 hover:text-indigo-700 hover:underline dark:text-indigo-400 dark:hover:text-indigo-300"
-                >
-                  お問い合わせ
-                </Link>
-              </nav>
             </header>
 
             <div className="space-y-6">
