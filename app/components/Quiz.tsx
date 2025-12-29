@@ -412,9 +412,10 @@ export default function Quiz({
                                 )}
                               <img
                                 src={imagePath}
-                                alt={`問題図 ${imgIndex + 1}`}
+                                alt={`${question.id} - 問題図 ${imgIndex + 1} - ${question.question.substring(0, 50)}...`}
                                 className="w-full max-w-md mx-auto rounded-lg border-2 border-gray-200 dark:border-gray-600 cursor-zoom-in hover:opacity-90 transition-opacity"
                                 onClick={() => setZoomedImage(imagePath)}
+                                loading="lazy"
                               />
                               <div className="mt-1 text-center text-xs text-gray-500 dark:text-gray-400">
                                 画像をクリックで拡大表示
@@ -567,7 +568,7 @@ export default function Quiz({
             </button>
             <img
               src={zoomedImage}
-              alt="問題図"
+              alt="拡大表示 - 問題図"
               className="max-w-full max-h-[90vh] object-contain rounded-lg"
               onClick={(e) => e.stopPropagation()}
             />
@@ -695,9 +696,10 @@ export default function Quiz({
                       )}
                     <img
                       src={imagePath}
-                      alt={`問題図 ${imgIndex + 1}`}
+                      alt={`${currentQuestion.id} - 問題図 ${imgIndex + 1} - ${currentQuestion.question.substring(0, 50)}...`}
                       className="w-full max-w-md mx-auto rounded-lg border-2 border-gray-200 dark:border-gray-600 cursor-zoom-in hover:opacity-90 transition-opacity"
                       onClick={() => setZoomedImage(imagePath)}
+                      loading="lazy"
                     />
                     <div className="mt-1 text-center text-xs text-gray-500 dark:text-gray-400">
                       画像をクリックで拡大表示
