@@ -8,7 +8,6 @@
 // ============================================
 
 // 国家1級
-import level1C2023 from "./questionSets/level-1-C-2023.json";
 import level1C20212 from "./questionSets/level-1-C-2021-2.json";
 import level1C20222 from "./questionSets/level-1-C-2022-2.json";
 import level1C20232 from "./questionSets/level-1-C-2023-2.json";
@@ -59,7 +58,6 @@ import level3D20222 from "./questionSets/level-3-D-2022-2.json";
 // 新しい年度の問題集は配列の上に配置すると、選択画面で新しい年度が上に表示されます
 export default [
   // 国家1級
-  level1C2023,
   level1C20212,
   level1C20222,
   level1C20232,
