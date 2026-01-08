@@ -171,6 +171,39 @@ export default function Home() {
               </div>
             </section>
 
+            {/* 学習コンテンツセクション */}
+            <section className="mb-16">
+              <h2 className="mb-8 text-center text-3xl font-bold text-gray-900 dark:text-white">
+                学習に役立つコンテンツ
+              </h2>
+              <div className="grid gap-6 md:grid-cols-2">
+                <Link
+                  href="/guide"
+                  className="group rounded-lg border-2 border-indigo-200 bg-white p-6 shadow-lg transition-all hover:border-indigo-400 hover:shadow-xl dark:border-indigo-700 dark:bg-gray-800 dark:hover:border-indigo-500"
+                >
+                  <div className="mb-3 text-3xl">📖</div>
+                  <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
+                    試験対策ガイド
+                  </h3>
+                  <p className="text-gray-700 dark:text-gray-300">
+                    効果的な学習方法、出題傾向、対策のポイント、おすすめの学習スケジュールなどを詳しく解説しています。
+                  </p>
+                </Link>
+                <Link
+                  href="/exam-info"
+                  className="group rounded-lg border-2 border-blue-200 bg-white p-6 shadow-lg transition-all hover:border-blue-400 hover:shadow-xl dark:border-blue-700 dark:bg-gray-800 dark:hover:border-blue-500"
+                >
+                  <div className="mb-3 text-3xl">ℹ️</div>
+                  <h3 className="mb-2 text-xl font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                    試験情報
+                  </h3>
+                  <p className="text-gray-700 dark:text-gray-300">
+                    各等級の詳細、受験資格、試験日程、合格基準、受験手続きなどの試験に関する情報をまとめています。
+                  </p>
+                </Link>
+              </div>
+            </section>
+
             {/* CTAセクション */}
             <section className="mb-16 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 p-8 text-center text-white dark:from-indigo-700 dark:to-purple-700">
               <h2 className="mb-4 text-3xl font-bold">

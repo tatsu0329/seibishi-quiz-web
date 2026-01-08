@@ -12,6 +12,18 @@ export default function Footer() {
           </div>
           <nav className="flex flex-wrap items-center justify-center gap-4 text-sm">
             <Link
+              href="/guide"
+              className="text-gray-600 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400"
+            >
+              試験対策ガイド
+            </Link>
+            <Link
+              href="/exam-info"
+              className="text-gray-600 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400"
+            >
+              試験情報
+            </Link>
+            <Link
               href="/about"
               className="text-gray-600 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400"
             >
